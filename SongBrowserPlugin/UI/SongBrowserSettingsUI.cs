@@ -31,7 +31,6 @@ namespace SongBrowserPlugin
             _settingsButton = UIBuilder.CreateUIButton(_mainMenuRectTransform, "SettingsButton");
             Vector2 currentPos = (_settingsButton.transform as RectTransform).anchoredPosition;
             UIBuilder.SetButtonText(ref _settingsButton, "Browser Settings");
-            //UIBuilder.SetButtonIcon(ref _settingsButton, SongBrowserApplication.Instance.CachedIcons["SettingsIcon"]);
             (_settingsButton.transform as RectTransform).anchoredPosition = new Vector2(currentPos.x, currentPos.y - 5);
             (_settingsButton.transform as RectTransform).sizeDelta = new Vector2(50.0f, 5.0f);
             _settingsButton.onClick.AddListener(onSettingsButtonClicked);
@@ -39,7 +38,18 @@ namespace SongBrowserPlugin
 
         private void onSettingsButtonClicked()
         {
+            SettingsFlowCoordinator view = UIBuilder.CreateFlowCoordinator<SettingsFlowCoordinator>("SettingsFlowCoordinator");
+            view.Present(_mainMenuViewController);
+        }
 
+        public void LateUpdate()
+        {
+            if (!this._levelListViewController.isActiveAndEnabled) return;
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                onSettingsButtonClicked();
+            }
         }
     }
 }

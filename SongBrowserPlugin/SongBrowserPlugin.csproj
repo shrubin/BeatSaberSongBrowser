@@ -94,6 +94,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SongBrowserModel.cs" />
     <Compile Include="DataAccess\SongBrowserSettings.cs" />
+    <Compile Include="UI\Settings\SettingsListViewController.cs" />
+    <Compile Include="UI\Settings\SettingsFlowCoordinator.cs" />
+    <Compile Include="UI\Settings\SettingsMasterViewController.cs" />
     <Compile Include="UI\SongBrowserSettingsUI.cs" />
     <Compile Include="UI\Base64Sprites.cs" />
     <Compile Include="UI\CustomUIKeyboard.cs" />
