@@ -17,8 +17,10 @@ namespace SongBrowserPlugin
 
         private Logger _log = new Logger("SongBrowserApplication");
 
-        // Song Browser UI Elements
+        // UIs
         private SongBrowserUI _songBrowserUI;
+        private SongBrowserSettingsUI _settingUI;
+
         public Dictionary<String, Sprite> CachedIcons;
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace SongBrowserPlugin
             Instance = this;
 
             _songBrowserUI = gameObject.AddComponent<SongBrowserUI>();
+            _settingUI = gameObject.AddComponent<SongBrowserSettingsUI>();
         }
 
         /// <summary>
@@ -67,9 +70,10 @@ namespace SongBrowserPlugin
 
             yield return new WaitUntil(delegate () { return Resources.FindObjectsOfTypeAll<StandardLevelSelectionFlowCoordinator>().Any(); });
 
-            _log.Debug("Found StandardLevelSelectionFlowCoordinator...");
+            _log.Debug("Found StandardLevelSelectionFlowCoordinator...");            
 
             _songBrowserUI.CreateUI();
+            _settingUI.CreateUI();
 
             if (SongLoaderPlugin.SongLoader.AreSongsLoaded)
             {
