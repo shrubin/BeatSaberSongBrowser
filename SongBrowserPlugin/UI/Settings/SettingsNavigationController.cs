@@ -24,11 +24,6 @@ namespace SongBrowserPlugin.UI
             _log.Debug("DidActivate()");
             base.DidActivate(firstActivation, activationType);
 
-            if (firstActivation)
-            {
-
-            }
-
             if (activationType == VRUIViewController.ActivationType.AddedToHierarchy)
             {
                 _log.Debug("Adding Dismiss Button");
@@ -46,7 +41,6 @@ namespace SongBrowserPlugin.UI
             _log.Debug("Dismissing!");
             this.DismissModalViewController(null, false);
         }
-
 
         /// <summary>
         /// 

@@ -27,12 +27,11 @@ namespace SongBrowserPlugin
 
             _mainMenuViewController = Resources.FindObjectsOfTypeAll<MainMenuViewController>().First();
             _mainMenuRectTransform = _mainMenuViewController.transform as RectTransform;
+            Button buttonTemplate = Resources.FindObjectsOfTypeAll<Button>().First(x => (x.name == "SettingsButton"));
+            Vector2 currentSettingsButtonPos = (buttonTemplate.transform as RectTransform).anchoredPosition;
+            Vector2 currentSettingsButtonSize = (buttonTemplate.transform as RectTransform).sizeDelta;
 
-            _settingsButton = UIBuilder.CreateUIButton(_mainMenuRectTransform, "SettingsButton");
-            Vector2 currentPos = (_settingsButton.transform as RectTransform).anchoredPosition;
-            UIBuilder.SetButtonText(ref _settingsButton, "Browser Settings");
-            (_settingsButton.transform as RectTransform).anchoredPosition = new Vector2(currentPos.x, currentPos.y - 5);
-            (_settingsButton.transform as RectTransform).sizeDelta = new Vector2(50.0f, 5.0f);
+            _settingsButton = UIBuilder.CreateButton(_mainMenuRectTransform, buttonTemplate, "Browser Settings", 2.5f, currentSettingsButtonPos.x, currentSettingsButtonPos.y - 5, currentSettingsButtonSize.x, 5);
             _settingsButton.onClick.AddListener(onSettingsButtonClicked);
         }
 
@@ -44,7 +43,7 @@ namespace SongBrowserPlugin
 
         public void LateUpdate()
         {
-            if (!this._levelListViewController.isActiveAndEnabled) return;
+            if (!this._mainMenuViewController.isActiveAndEnabled) return;
 
             if (Input.GetKeyDown(KeyCode.S))
             {

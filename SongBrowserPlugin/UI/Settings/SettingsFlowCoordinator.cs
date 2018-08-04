@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SongBrowserPlugin.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,16 +18,10 @@ namespace SongBrowserPlugin.UI
         private SettingsNavigationController _settingsNavigationController;
         private SettingsListViewController _settingsViewController;
 
-        private Button _dismissButton;
-
         private bool _initialized;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentViewController"></param>
-        /// <param name="levels"></param>
-        /// <param name="gameplayMode"></param>
+        private SongBrowserSettings _settings;
+
         public virtual void Present(VRUIViewController parentViewController)
         {
             if (!this._initialized)
@@ -37,11 +32,28 @@ namespace SongBrowserPlugin.UI
                 this._initialized = true;
             }
 
-            //this._levelSelectionNavigationController.InitWithGameplayModeIndicator(gameplayMode, true);
-            parentViewController.PresentModalViewController(this._settingsNavigationController, null, parentViewController.isRebuildingHierarchy);
+            _settings = SongBrowserSettings.Load();
 
-            //this._levelListViewController.Init(levels, false);
-            this._settingsNavigationController.PushViewController(this._settingsViewController, parentViewController.isRebuildingHierarchy);            
+            parentViewController.PresentModalViewController(this._settingsNavigationController, null, parentViewController.isRebuildingHierarchy);
+            this._settingsNavigationController.PushViewController(this._settingsViewController, parentViewController.isRebuildingHierarchy);
+
+            this._settingsViewController.didSubmitSettingsEvent += HandleDidSubmitSettingsEvent;
+            this._settingsViewController.didCancelSettingsEvent += HandleDidCancelSettingsEvent;
+        }
+
+        public void HandleDidSubmitSettingsEvent()
+        {
+            _settingsNavigationController.DismissModalViewController(delegate ()
+            {
+                _settings.Save();
+            });
+        }
+
+        public void HandleDidCancelSettingsEvent()
+        {
+            _settingsNavigationController.DismissModalViewController(delegate ()
+            {
+            });
         }
     }
 

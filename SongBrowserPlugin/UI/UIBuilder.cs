@@ -78,6 +78,32 @@ namespace SongBrowserPlugin.UI
         }
 
         /// <summary>
+        /// Very generic helper create button method.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="buttonTemplate"></param>
+        /// <param name="buttonText"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <returns></returns>
+        static public Button CreateButton(RectTransform parent, Button buttonTemplate, String buttonText, float fontSize, float x, float y, float w, float h)
+        {
+            Button newButton = UIBuilder.CreateUIButton(parent, buttonTemplate);
+
+            newButton.interactable = true;
+            (newButton.transform as RectTransform).anchoredPosition = new Vector2(x, y);
+            (newButton.transform as RectTransform).sizeDelta = new Vector2(w, h);
+
+            UIBuilder.SetButtonText(ref newButton, buttonText);
+            UIBuilder.SetButtonIconEnabled(ref newButton, false);
+            UIBuilder.SetButtonTextSize(ref newButton, fontSize);
+
+            return newButton;
+        }
+
+        /// <summary>
         /// Generic create sort button.
         /// </summary>
         /// <param name="rect"></param>
@@ -174,7 +200,7 @@ namespace SongBrowserPlugin.UI
         /// <param name="text"></param>
         /// <param name="position"></param>
         /// <returns></returns>
-        static public TextMeshProUGUI CreateText(RectTransform parent, string text, Vector2 position)
+        static public TextMeshProUGUI CreateText(RectTransform parent, string text, float x, float y)
         {
             TextMeshProUGUI textMesh = new GameObject("TextMeshProUGUI_GO").AddComponent<TextMeshProUGUI>();
             textMesh.rectTransform.SetParent(parent, false);
@@ -185,7 +211,7 @@ namespace SongBrowserPlugin.UI
             textMesh.rectTransform.anchorMin = new Vector2(0.5f, 1f);
             textMesh.rectTransform.anchorMax = new Vector2(0.5f, 1f);
             textMesh.rectTransform.sizeDelta = new Vector2(60f, 10f);
-            textMesh.rectTransform.anchoredPosition = position;
+            textMesh.rectTransform.anchoredPosition = new Vector2(x, y);
 
             return textMesh;
         }
