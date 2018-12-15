@@ -61,6 +61,8 @@ namespace SongBrowserPlugin.DataAccess
         public int randomSongSeed;
         public bool invertSortResults = false;
 
+        public LogLevel logLevel = LogLevel.Info;
+
         [XmlIgnore]
         [NonSerialized]
         public bool DisableSavingSettings = false;
@@ -153,6 +155,9 @@ namespace SongBrowserPlugin.DataAccess
                 Logger.Debug("Settings file does not exist, returning defaults: " + settingsFilePath);
                 retVal = new SongBrowserSettings();
             }
+
+            // HACK: Just set log level here
+            Logger.SetLogLevel(retVal.logLevel);
 
             // check if the playlist directory exists, make it otherwise.
             String playlistDirPath = Path.Combine(Environment.CurrentDirectory, "Playlists");
