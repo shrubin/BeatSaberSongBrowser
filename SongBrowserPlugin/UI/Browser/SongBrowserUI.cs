@@ -1132,12 +1132,7 @@ namespace SongBrowserPlugin.UI
                     }
                 }
 
-                // HACK, seems like if 6 or less items scrolling to row causes the song list to disappear.
-                if (levels.Length > 6 && !String.IsNullOrEmpty(selectedLevelID) && levels.Any(x => x.levelID == selectedLevelID))
-                {
-                    SelectAndScrollToLevel(_levelListTableView, selectedLevelID);
-                }
-
+                ClearSelection(_levelListTableView);
                 RefreshSortButtonUI();
                 RefreshQuickScrollButtons();
             }
@@ -1179,6 +1174,35 @@ namespace SongBrowserPlugin.UI
             tableView.SelectRow(row, true);
             tableView.ScrollToRow(row, true);
             _lastRow = row;
+        }
+
+        /// <summary>
+        /// clears selection
+        /// </summary>
+        private void ClearSelection(LevelListTableView table)
+        {
+            // Check once per load
+            if (!_checkedForTwitchPlugin)
+            {
+                Logger.Info("Checking for BeatSaber Twitch Integration Plugin...");
+
+                // Try to detect BeatSaber Twitch Integration Plugin
+                _detectedTwitchPluginQueue = Resources.FindObjectsOfTypeAll<VRUIViewController>().Any(x => x.name == "RequestInfo");
+
+                Logger.Info("BeatSaber Twitch Integration plugin detected: " + _detectedTwitchPluginQueue);
+
+                _checkedForTwitchPlugin = true;
+            }
+
+            // Skip scrolling to level if twitch plugin has queue active.
+            if (_detectedTwitchPluginQueue)
+            {
+                Logger.Debug("Skipping SelectAndScrollToLevel() because we detected Twitch Integrtion Plugin has a Queue active...");
+                return;
+            }
+
+            TableView tableView = table.GetComponentInChildren<TableView>();
+            tableView.ClearSelection();
         }
 
         /// <summary>
