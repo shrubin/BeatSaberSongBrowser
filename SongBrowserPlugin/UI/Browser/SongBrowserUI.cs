@@ -224,18 +224,24 @@ namespace SongBrowserPlugin.UI
 
                 var customLevelCollectionSO = new CustomLevelCollectionSO();
 
-                Logger.Info("Beatmap collection songloader loaded {0}", SongLoader.CustomBeatmapLevelPackCollectionSO == null);
+                Logger.Info("Beatmap collection songloader loaded {0}", SongLoader.CustomBeatmapLevelPackCollectionSO != null);
 
-                var customBeatmapLevelPackCollectionSO = SongLoader.CustomBeatmapLevelPackCollectionSO;
-                var customBeatmapLevelPackSO = CustomLevelPack.GetPlaylistPack(customLevelCollectionSO, "test", "test", Convert.FromBase64String(packImage));
-                customBeatmapLevelPackCollectionSO.AddLevelPack(customBeatmapLevelPackSO);
-                customBeatmapLevelPackCollectionSO.ReplaceReferences();
+                var levelCollectionSO = Resources.FindObjectsOfTypeAll<BeatmapLevelCollectionSO>().FirstOrDefault();
+                var CustomLevelCollectionSO = SongLoaderPlugin.OverrideClasses.CustomLevelCollectionSO.ReplaceOriginal(levelCollectionSO);
+                var beatmapLevelPackCollectionSO = Resources.FindObjectsOfTypeAll<BeatmapLevelPackCollectionSO>().FirstOrDefault();
+                var CustomBeatmapLevelPackCollectionSO = SongLoaderPlugin.SongLoader.CustomBeatmapLevelPackCollectionSO;
+                var CustomBeatmapLevelPackSO = SongLoaderPlugin.OverrideClasses.CustomBeatmapLevelPackSO.GetPack(CustomLevelCollectionSO);
+                CustomBeatmapLevelPackSO.SetPrivateField("_packID", "Top300");
+                CustomBeatmapLevelPackSO.SetPrivateField("_packName", "Top300");
+                CustomBeatmapLevelPackSO.SetPrivateField("_coverImage", CustomUI.Utilities.UIUtilities.LoadSpriteRaw(Convert.FromBase64String(packImage)));
+                CustomBeatmapLevelPackCollectionSO.AddLevelPack(CustomBeatmapLevelPackSO);
+                CustomBeatmapLevelPackCollectionSO.ReplaceReferences();
 
-                //var soloFreePlay = Resources.FindObjectsOfTypeAll<SoloFreePlayFlowCoordinator>().FirstOrDefault();
-                //LevelPacksViewController levelPacksViewController = (LevelPacksViewController)soloFreePlay.GetField("_levelPacksViewController");
-                //levelPacksViewController.SetData(customBeatmapLevelPackCollectionSO, 0);
+                var soloFreePlay = Resources.FindObjectsOfTypeAll<SoloFreePlayFlowCoordinator>().FirstOrDefault();
+                LevelPacksViewController levelPacksViewController = (LevelPacksViewController)soloFreePlay.GetField("_levelPacksViewController");
+                levelPacksViewController.SetData(CustomBeatmapLevelPackCollectionSO, 0);
 
-                //var levelPackCol = customBeatmapLevelPackCollectionSO.GetField<IBeatmapLevelPackCollection>("_levelPackCollection");
+                //var levelPackCol = customBeatmapLevelPackCollectionSO.GetField<IBeatmapLevelPackCollection>("_levelPackCollection"); NullReferenceException
                 //Logger.Info("Betmap level packs {0}", levelPackCol.beatmapLevelPacks == null);
                 //Logger.Info("Betmap level packs length {0}", levelPackCol.beatmapLevelPacks.Length);
 
