@@ -128,6 +128,7 @@
     <Compile Include="Internals\CustomHelpers.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="PluginConfig.cs" />
+    <Compile Include="UI\CustomLevelPack.cs" />
     <Compile Include="UI\SceneEvents.cs" />
     <Compile Include="UI\BackButtonNavigationController.cs" />
     <Compile Include="UI\DownloadQueue\DownloadQueueTableCell.cs" />

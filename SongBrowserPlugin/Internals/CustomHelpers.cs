@@ -42,6 +42,14 @@ namespace SongBrowserPlugin.Internals
             return pack;
         }
 
+        public static void InstallLevelPack(BeatmapLevelSO[] levels, string packName = null, Sprite packCover = null)
+        {
+            CustomLevelCollectionSO levelCollection = ScriptableObject.CreateInstance<CustomLevelCollectionSO>();
+            levelCollection.SetPrivateField("_levelList", levels.ToList());
+            levelCollection.SetPrivateField("_beatmapLevels", levels);
+
+        }
+
         static char[] hexChars = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
         public static string CheckHex(string input)
