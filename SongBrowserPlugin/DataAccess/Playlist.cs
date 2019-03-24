@@ -262,7 +262,7 @@ namespace SongBrowserPlugin.DataAccess
 
         public Playlist(JSONNode playlistNode)
         {
-            string image = playlistNode["image"].Value;
+            image = playlistNode["image"].Value;
             if (!string.IsNullOrEmpty(image))
             {
                 try
